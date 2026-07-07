@@ -1,122 +1,107 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { useEffect, useMemo, useState } from 'react'
+import livrosBase from './data/livros.json'
+import Header from './components/Header.jsx'
+import Footer from './components/Footer.jsx'
+import CampoBusca from './components/CampoBusca.jsx'
+import FiltroCategoria from './components/FiltroCategoria.jsx'
+import FiltroStatus from './components/FiltroStatus.jsx'
+import PainelEstatisticas from './components/PainelEstatisticas.jsx'
+import ListaLivros from './components/ListaLivros.jsx'
 import './App.css'
-
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+function lerFavoritosSeguros() {
+// Atencao: JSON invalido no localStorage pode quebrar o app no primeiro render.
+// Interessante: encapsular o parse em funcao separada melhora testabilidade e reuso.
+try {
+const favoritosSalvos = localStorage.getItem('biblioteca-viva:favoritos')
+const favoritosConvertidos = favoritosSalvos ? JSON.parse(favoritosSalvos) : []
+return Array.isArray(favoritosConvertidos) ? favoritosConvertidos : []
+} catch {
+return []
 }
-
+}
+function App() {
+// Estados controlados pela interface.
+const [busca, setBusca] = useState('')
+const [categoriaAtiva, setCategoriaAtiva] = useState('Todas')
+const [statusAtivo, setStatusAtivo] = useState('Todos')
+// Estado inicial com leitura do localStorage.
+const [favoritos, setFavoritos] = useState(() => {
+return lerFavoritosSeguros()
+})
+// Sempre que favoritos mudar, a nova lista é salva no navegador.
+useEffect(() => {
+localStorage.setItem('biblioteca-viva:favoritos', JSON.stringify(favoritos))
+}, [favoritos])
+// Categorias derivadas da base JSON, sem duplicidade.
+const categorias = useMemo(() => {
+const categoriasUnicas = livrosBase.map((livro) => livro.categoria)
+return [...new Set(categoriasUnicas)].sort()
+}, [])
+// Lista filtrada a partir de busca, categoria e status.
+// Atencao: se as strings de status no JSON mudarem, o filtro pode deixar de encontrar resultados.
+// Interessante: useMemo evita recalculo caro quando os estados de filtro nao mudam.
+const livrosFiltrados = useMemo(() => {
+const termo = busca.trim().toLowerCase()
+return livrosBase.filter((livro) => {
+const textoPesquisavel = [
+livro.titulo,
+livro.autor,
+livro.categoria,
+...livro.tags,
+].join(' ').toLowerCase()
+const combinaComBusca = textoPesquisavel.includes(termo)
+const combinaComCategoria = categoriaAtiva === 'Todas' || livro.categoria === categoriaAtiva
+const combinaComStatus = statusAtivo === 'Todos' || livro.status === statusAtivo
+return combinaComBusca && combinaComCategoria && combinaComStatus
+})
+}, [busca, categoriaAtiva, statusAtivo])
+function alternarFavorito(idLivro) {
+// Atencao: comparar por id pressupoe unicidade; ids duplicados causariam comportamento inconsistente.
+// Interessante: update funcional do estado evita bugs de concorrencia em cliques rapidos.
+setFavoritos((favoritosAtuais) => {
+if (favoritosAtuais.includes(idLivro)) {
+return favoritosAtuais.filter((id) => id !== idLivro)
+}
+return [...favoritosAtuais, idLivro]
+})
+}
+return (
+<>
+<Header />
+<main className="pagina" id="catalogo">
+<section className="hero">
+<div>
+<span className="etiqueta">Projeto React guiado por dados</span>
+<h1>Catálogo digital para organizar leituras e recomendações</h1>
+<p>
+Uma interface construída com componentes reutilizáveis, filtros dinâmicos,
+cards responsivos e dados estruturados em JSON.
+</p>
+</div>
+</section>
+<PainelEstatisticas
+total={livrosBase.length}
+exibidos={livrosFiltrados.length}
+favoritos={favoritos.length}
+categorias={categorias.length}
+/>
+<section className="filtros" id="filtros">
+<CampoBusca valor={busca} aoAlterar={setBusca} />
+<FiltroCategoria
+categorias={categorias}
+valor={categoriaAtiva}
+aoAlterar={setCategoriaAtiva}
+/>
+<FiltroStatus valor={statusAtivo} aoAlterar={setStatusAtivo} />
+</section>
+<ListaLivros
+livros={livrosFiltrados}
+favoritos={favoritos}
+aoAlternarFavorito={alternarFavorito}
+/>
+</main>
+<Footer />
+</>
+)
+}
 export default App
