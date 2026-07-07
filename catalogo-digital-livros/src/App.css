@@ -27,7 +27,7 @@ width: 48px;
 height: 48px;
 border-radius: 16px;
 color: #ffffff;
-background: linear-gradient(135deg, #256d5f, #1d7a66);
+background: linear-gradient(135deg, #cd54c9, #d8389b);
 font-weight: 800;
 letter-spacing: -0.08em;
 box-shadow: 0 12px 24px rgba(29, 122, 102, 0.24);
@@ -89,7 +89,7 @@ display: inline-flex;
 margin-bottom: 16px;
 padding: 8px 12px;
 border-radius: 999px;
-color: var(--accent);
+color: palevioletred;
 background: var(--accent-soft);
 border: 1px solid rgba(29, 122, 102, 0.22);
 font-size: 0.82rem;
@@ -198,7 +198,7 @@ transition: all 180ms ease;
 .chip:hover {
 color: #ffffff;
 border-color: transparent;
-background: linear-gradient(135deg, #2d7667, #1d7a66);
+background: linear-gradient(135deg, #c2458a, #c861b8);
 }
 .lista-livros {
 /* Atencao: grande volume de cards pode demandar paginacao ou virtualizacao no futuro. *
@@ -294,13 +294,13 @@ font-weight: 800;
 transition: all 180ms ease;
 }
 .favorito:hover {
-border-color: #b7b1a4;
+border-color: #df4bb3;
 color: var(--text);
 }
 .favorito.ativo {
 color: #ffffff;
 border-color: transparent;
-background: linear-gradient(135deg, #d18f28, #b67b1f);
+background: linear-gradient(135deg, #e44fa1, #d23584);
 }
 .card-livro h3 {
 margin: 16px 0 4px;
