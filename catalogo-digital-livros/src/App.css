@@ -62,11 +62,7 @@ color: var(--text);
 transform: translateY(-1px);
 }
 .hero {
-position: relative;
-isolation: isolate;
-min-height: 420px;
 display: grid;
-align-items: end;
 padding: clamp(20px, 4vw, 40px) 0;
 background:
 linear-gradient(115deg, rgba(255, 255, 255, 0.4), rgba(248, 245, 238, 0.38)),
@@ -84,46 +80,30 @@ border-radius: 50%;
 background: radial-gradient(circle, rgba(29, 122, 102, 0.14), transparent 62%);
 z-index: -1;
 }
-.etiqueta {
-display: inline-flex;
-margin-bottom: 16px;
-padding: 8px 12px;
-border-radius: 999px;
-color: palevioletred;
-background: var(--accent-soft);
-border: 1px solid rgba(29, 122, 102, 0.22);
-font-size: 0.82rem;
-font-weight: 700;
-letter-spacing: 0.02em;
-}
+
 .hero h1 {
-max-width: 820px;
-margin: 0;
+margin-left: 46px;
 color: #22241f;
 font-family: 'Fraunces', Georgia, serif;
-font-size: clamp(2.2rem, 6vw, 4.8rem);
+font-size: 52px;
 line-height: 0.96;
-letter-spacing: -0.04em;
 }
 .hero p {
-max-width: 680px;
-margin: 18px 0 0;
+margin-left: 46px;
 color: var(--text-soft);
 font-size: 1.03rem;
 line-height: 1.7;
 }
 .painel-estatisticas {
 display: grid;
-grid-template-columns: repeat(4, 1fr);
+grid-template-columns: repeat(9, 1fr);
+margin-left: 30px;
 gap: 14px;
 margin-top: 8px;
 }
 .stat-card {
 padding: 10px 0;
-border-radius: 0;
-border: 0;
 background: transparent;
-box-shadow: none;
 }
 .stat-card strong {
 display: block;
@@ -181,18 +161,22 @@ border-color: #98b8ac;
 box-shadow: 0 0 0 4px rgba(29, 122, 102, 0.1);
 }
 .filtro-status {
-display: flex;
-gap: 8px;
-flex-wrap: wrap;
+align-items: center;
+padding: 3px;
+border-radius: 23px;
+background: var(--surface-strong);
+border: 1px solid var(--line);
+width: fit-content;
 }
 .chip {
-border: 1px solid var(--line);
-border-radius: 999px;
-padding: 10px 13px;
-color: var(--text-soft);
-background: var(--surface-strong);
-cursor: pointer;
-transition: all 180ms ease;
+ border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--text-soft);
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 180ms ease;
 }
 .chip.ativo,
 .chip:hover {

@@ -2,8 +2,8 @@ function PainelEstatisticas({ total, exibidos, favoritos, categorias }) {
 // Atencao: indicadores derivados devem vir de fonte unica de verdade para evitar inconsistencias.
 // Interessante: transformar os cards em array simplifica manutencao e extensao futura.
 const indicadores = [
-{ rotulo: 'Livros cadastrados', valor: total },
-{ rotulo: 'Resultado atual', valor: exibidos },
+{ rotulo: 'Livros', valor: total },
+{ rotulo: 'Exibidos', valor: exibidos },
 { rotulo: 'Favoritos', valor: favoritos },
 { rotulo: 'Categorias', valor: categorias },
 ]

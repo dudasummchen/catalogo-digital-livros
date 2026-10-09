@@ -3,9 +3,8 @@ function FiltroCategoria({ categorias, valor, aoAlterar }) {
 // Interessante: select controlado facilita sincronizar UI e regras de negocio.
 return (
 <label className="filtro-select">
-<span>Categoria</span>
 <select value={valor} onChange={(evento) => aoAlterar(evento.target.value)}>
-<option value="Todas">Todas</option>
+<option value="Todas">Todas as categorias</option>
 {categorias.map((categoria) => (
 <option key={categoria} value={categoria}>{categoria}</option>
 ))}

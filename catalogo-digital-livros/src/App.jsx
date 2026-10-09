@@ -71,12 +71,8 @@ return (
 <main className="pagina" id="catalogo">
 <section className="hero">
 <div>
-<span className="etiqueta">Projeto React guiado por dados</span>
-<h1>Catálogo digital para organizar leituras e recomendações</h1>
-<p>
-Uma interface construída com componentes reutilizáveis, filtros dinâmicos,
-cards responsivos e dados estruturados em JSON.
-</p>
+<h1>Suas leituras, em um só lugar.</h1>
+<p>Organize o que você quer ler, está lendo e já leu. Busque por título, autor ou tema</p>
 </div>
 </section>
 <PainelEstatisticas
