@@ -209,7 +209,6 @@ min-height: 350px;
 position: relative;
 overflow: hidden;
 display: grid;
-place-items: end start;
 background:
 linear-gradient(145deg, rgba(40, 108, 95, 0.95), rgba(43, 78, 89, 0.9)),
 url('/hero-shape.svg') right center / cover no-repeat;
